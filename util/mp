@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use PoliticalWeb;
+
+my $sch = PoliticalWeb->connect('dbi:mysql:database=politics;' .
+                                'host=politicalweb.org.uk',
+                                'politics', 'work4you')
+  or die;
+
+my $con_rs = $sch->resultset('Constituency');
+
+my (@cons) = $con_rs->search({name => shift});
+
+foreach (@cons) {
+  print $_->name, ' - ';
+  print $_->mp->mp_name, ' (', $_->mp->party, ")\n";
+}

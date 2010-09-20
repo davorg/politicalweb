@@ -1,0 +1,96 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use WebService::TWFY::API;
+use XML::LibXML;
+use DBI;
+
+my $api = WebService::TWFY::API->new(
+  { key => $ENV{TWFY_KEY} }
+);
+
+my $doc = twfy_qry('getMPs', $api);
+
+my @mps;
+foreach ($doc->findnodes('//match')) {
+  push @mps, {
+              id      => $_->findvalue('person_id'),
+              m_id    => $_->findvalue('member_id'),
+              name    => $_->findvalue('name'),
+              party   => $_->findvalue('party'),
+              constit => $_->findvalue('constituency'),
+             };
+}
+
+my $dbh = DBI->connect('dbi:mysql:database=politics;host=politicalweb.org.uk',
+                       'politics', 'work4you')
+  or die DBI::errstr;
+
+my $ins_sql = 'INSERT INTO mp
+                  (mp_name, twfy_id, image_url, party, twfy_mem_id,
+                   bbc_url, guardian_url, edm_url, wikipedia_url,
+                   official_site_url)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+my $id_sql  = 'SELECT last_insert_id()';
+
+my $upd_sql = 'INSERT INTO constituency (mp, name)
+               VALUES (?, ?)';
+
+my $ins_sth = $dbh->prepare($ins_sql);
+my $id_sth  = $dbh->prepare($id_sql);
+my $upd_sth = $dbh->prepare($upd_sql);
+
+my $i = 1;
+
+foreach (@mps) {
+
+  $doc = twfy_qry('getMP', $api, { id => $_->{id} });
+
+  if (my @nodes = $doc->findnodes('//match')) {
+    $_->{image} = $nodes[0]->findvalue('image');
+  }
+
+  $doc = twfy_qry('getMPInfo', $api, { id => $_->{id} });
+
+  next unless $doc;
+
+  $_->{bbc}  = $doc->findvalue('//bbc_profile_url');
+  $_->{wp}   = $doc->findvalue('//wikipedia_url');
+  $_->{gu}   = $doc->findvalue('//guardian_mp_summary');
+  $_->{edmi} = $doc->findvalue('//edm_ais_url');
+  $_->{site} = $doc->findvalue('//mp_website');
+
+  print $i++, ' : ', $_->{name}, ' / ', $_->{constit}, "\n";
+
+  $ins_sth->execute($_->{name}, $_->{id}, $_->{image}, $_->{party},
+                    $_->{m_id}, $_->{bbc}, $_->{gu}, $_->{edmi}, $_->{wp},
+                    $_->{site});
+
+  $id_sth->execute;
+  my $id = [$id_sth->fetch]->[0][0];
+  $upd_sth->execute($id, $_->{constit});
+}
+
+
+
+sub twfy_qry {
+  my ($qry, $api, $params) = @_;
+
+  $params = {} unless defined $params;
+
+  $params = { output => 'xml', %$params };
+
+  my $rc = $api->query($qry, $params);
+  
+  die $rc->{error_code} unless $rc->is_success;
+
+  unless ($rc->{results}) {
+    warn 'Weirdness!';
+    return;
+  }
+
+  return XML::LibXML->new->parse_string($rc->{results});
+}

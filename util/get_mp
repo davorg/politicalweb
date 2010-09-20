@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use WebService::TWFY::API;
+use XML::LibXML;
+
+my $twfy = WebService::TWFY::API->new(
+  { key => $ENV{TWFY_KEY} }
+);
+
+my $rc = $twfy->query('getMP',
+                      {
+                        postcode => shift,
+                        output   => 'xml',
+                      });
+
+unless ($rc->is_success) {
+  die $rc->{error_code};
+}
+
+my $doc = XML::LibXML->new->parse_string($rc->{results});
+print $doc->findvalue('//full_name'), "\n",
+      $doc->findvalue('//constituency'), "\n",
+      $doc->findvalue('//party'), "\n";
+
