@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+use 5.010;
+use strict;
+use warnings;
+
+use WebService::TWFY::API;
+use JSON;
+
+my $twfy = WebService::TWFY::API->new({
+  key => $ENV{TWFY_KEY}
+}) or die $!;
+
+my $rv = $twfy->query( 'getConstituency', {
+                       postcode => 'SW129RW',
+                      });
+
+if ($rv->{is_success}) {
+  my $const = from_json($rv->{results});
+  say $const->{name};
+
+  my $rv = $twfy->query( 'getMP', {
+                         constituency => $const->{name},
+                        });
+
+  if ($rv->{is_success}) {
+    my $mp = from_json($rv->{results});
+    say "$mp->{first_name} $mp->{last_name}, $mp->{party}"
+  }
+}
+
