@@ -8,18 +8,6 @@ my $twfy = WebService::TWFY::API->new({
   key => $ENV{TWFY_KEY}
 }) or die $!;
 
-my $ccache = CHI->new(
-  driver => 'Memcached',
-  namespace => 'constituency',
-  servers => [ '127.0.0.1:11211' ],
-);
-
-my $mcache = CHI->new(
-  driver => 'Memcached',
-  namespace => 'mp',
-  servers => [ '127.0.0.1:11211' ],
-);
-
 our $VERSION = '0.1';
 
 get '/' => sub {
