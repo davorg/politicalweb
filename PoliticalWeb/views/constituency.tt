@@ -1,5 +1,5 @@
 [% IF mp.image %]
-<img src="http://www.theyworkforyou.com/[% mp.image %]" float="left "/>
+<img src="http://www.theyworkforyou.com/[% mp.image %]" align="left"/>
 [% END %]
 <h1>[% constit.name %]</h1>
 <h2>[% mp.full_name %] ([% mp.party %])</h2>
@@ -17,8 +17,3 @@
 <li><a href="http://www.guardian.co.uk/politics/person/[% mp.guardian_aristotle_id %]">Guardian MP page</a></li>
 [% END %]
 </ul>
-<!-- 
-[% USE Dumper;
-   Dumper.dump(constit);
-   Dumper.dump(mp) %]
--->
