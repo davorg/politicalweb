@@ -1,7 +1,6 @@
 package PoliticalWeb;
 use Dancer ':syntax';
 use Dancer::Plugin::Cache::CHI;
-
 use WebService::TWFY::API;
 
 my $twfy = WebService::TWFY::API->new({
@@ -12,6 +11,10 @@ our $VERSION = '0.1';
 
 get '/' => sub {
   template 'index';
+};
+
+get '/about/' => sub {
+  template 'about/index';  
 };
 
 get '/constituency/:constname' => sub {
