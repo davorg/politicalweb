@@ -10,6 +10,14 @@ my $twfy = WebService::TWFY::API->new({
 our $VERSION = '0.1';
 
 get '/' => sub {
+  if (params->{pc}) {
+    params->{constname} = get_const_name_from_pc(params->{pc});
+    redirect '/constituency/' . params->{constname};
+  }
+  if (params->{constit}) {
+    redirect '/constituency/' . params->{constit};
+  }
+  
   template 'index';
 };
 
@@ -39,6 +47,20 @@ sub get_const {
   }
   
   return cache_get "C:$_[0]";
+}
+
+sub get_const_name_from_pc {
+  my $ret = $twfy->query( 'getConstituency', {
+    postcode => $_[0],
+  });
+    
+  if ($ret->{is_success}) {
+    my $constit = from_json($ret->{results});
+    cache_set 'C:' . $constit->{name}, $constit, 60*60*60;
+    return $constit->{name};
+  }
+  
+  return;
 }
 
 sub get_mp {

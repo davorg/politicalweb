@@ -1,2 +1,2 @@
       <form><input id="pc" name="pc" value="enter postcode" /></form>
-      <div id="result"></div>
+      <form><input id="constit" name="constit" value="enter constituency name" /></form>
