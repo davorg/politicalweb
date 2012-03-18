@@ -1,4 +1,4 @@
-package PoliticalWeb::Result::Constituency;
+package PoliticalWeb::Schema::Result::Constituency;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-PoliticalWeb::Result::Constituency
+PoliticalWeb::Schema::Result::Constituency
 
 =cut
 
@@ -55,13 +55,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: belongs_to
 
-Related object: L<PoliticalWeb::Result::Mp>
+Related object: L<PoliticalWeb::Schema::Result::Mp>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "mp",
-  "PoliticalWeb::Result::Mp",
+  "PoliticalWeb::Schema::Result::Mp",
   { id => "mp" },
   {
     is_deferrable => 1,
@@ -71,25 +71,55 @@ __PACKAGE__->belongs_to(
   },
 );
 
+=head2 constituency_links
+
+Type: has_many
+
+Related object: L<PoliticalWeb::Schema::Result::ConstituencyLink>
+
+=cut
+
+__PACKAGE__->has_many(
+  "constituency_links",
+  "PoliticalWeb::Schema::Result::ConstituencyLink",
+  { "foreign.constituency" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 urls
 
 Type: has_many
 
-Related object: L<PoliticalWeb::Result::Url>
+Related object: L<PoliticalWeb::Schema::Result::Url>
 
 =cut
 
 __PACKAGE__->has_many(
   "urls",
-  "PoliticalWeb::Result::Url",
+  "PoliticalWeb::Schema::Result::Url",
+  { "foreign.constituency" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 user_constituencies
+
+Type: has_many
+
+Related object: L<PoliticalWeb::Schema::Result::UserConstituency>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_constituencies",
+  "PoliticalWeb::Schema::Result::UserConstituency",
   { "foreign.constituency" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2010-09-20 16:33:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:s3p9Chd8pPshowLWJazpfQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-03-18 16:38:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hzCQrsZiMUwIMBxUwQJoPA
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

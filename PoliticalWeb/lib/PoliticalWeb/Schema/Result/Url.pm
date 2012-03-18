@@ -1,4 +1,4 @@
-package PoliticalWeb::Result::Url;
+package PoliticalWeb::Schema::Result::Url;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-PoliticalWeb::Result::Url
+PoliticalWeb::Schema::Result::Url
 
 =cut
 
@@ -79,21 +79,21 @@ __PACKAGE__->set_primary_key("id");
 
 Type: belongs_to
 
-Related object: L<PoliticalWeb::Result::Constituency>
+Related object: L<PoliticalWeb::Schema::Result::Constituency>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "constituency",
-  "PoliticalWeb::Result::Constituency",
+  "PoliticalWeb::Schema::Result::Constituency",
   { id => "constituency" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07002 @ 2010-09-20 16:33:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8kagJCtguXqwhFEf3KFr8A
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-03-18 16:38:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gk7kbSPI4qb8VSJbJD1vRA
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

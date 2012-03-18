@@ -33,3 +33,9 @@ plugins:
     global: 1
     servers: [ '127.0.0.1:11211' ]
 
+  DBIC:
+    politicalweb:
+      schema_class: PoliticalWeb::Schema
+      dsn: dbi:mysql:database=politicalweb
+      user: politicalweb
+      pass: p0l171c4lw3b

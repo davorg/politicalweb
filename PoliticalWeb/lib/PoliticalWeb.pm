@@ -1,5 +1,6 @@
 package PoliticalWeb;
 use Dancer ':syntax';
+use Dancer::Plugin::DBIC;
 use Dancer::Plugin::Cache::CHI;
 use WebService::TWFY::API;
 
@@ -11,8 +12,7 @@ our $VERSION = '0.1';
 
 get '/' => sub {
   if (params->{pc}) {
-    params->{constname} = get_const_name_from_pc(params->{pc});
-    redirect '/constituency/' . params->{constname};
+    params->{constit} = get_const_name_from_pc(params->{pc});
   }
   if (params->{constit}) {
     redirect '/constituency/' . params->{constit};
@@ -46,7 +46,14 @@ sub get_const {
     }
   }
   
-  return cache_get "C:$_[0]";
+  my $con = cache_get "C:$_[0]";
+  
+  my $con_rs = schema->resultset('Constituency');
+  if (my $con_db = $con_rs->find({ name => $con->{name} })) {
+    $con->{db} = $con_db;
+  }
+  
+  return $con;
 }
 
 sub get_const_name_from_pc {
@@ -80,8 +87,9 @@ sub get_mp {
       if ($ret->{is_success}) {
         $mp->{extra} = from_json($ret->{results});
       
-        cache_set "M:$_[0]", $mp, 60*60*60;
       }
+      
+      cache_set "M:$_[0]", $mp, 60*60*60;
     }
     
     return cache_get "M:$_[0]";

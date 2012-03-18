@@ -5,7 +5,17 @@ use warnings;
 
 use WebService::TWFY::API;
 use XML::LibXML;
-use DBI;
+use FindBin '$Bin';
+use lib "$Bin/../lib";
+
+use PoliticalWeb::Schema;
+
+my $sch = PoliticalWeb::Schema->connect(
+  "dbi:mysql:database=$ENV{POLITICALWEB_DB};host=$ENV{POLITICALWEB_DB_SERVER}",
+  $ENV{POLITICALWEB_DB_USER}, $ENV{POLITICALWEB_DB_PASS},
+);
+
+my $mp_rs = $sch->resultset('Mp');
 
 my $api = WebService::TWFY::API->new(
   { key => $ENV{TWFY_KEY} }
@@ -23,25 +33,6 @@ foreach ($doc->findnodes('//match')) {
               constit => $_->findvalue('constituency'),
              };
 }
-
-my $dbh = DBI->connect('dbi:mysql:database=politics;host=politicalweb.org.uk',
-                       'politics', 'work4you')
-  or die DBI::errstr;
-
-my $ins_sql = 'INSERT INTO mp
-                  (mp_name, twfy_id, image_url, party, twfy_mem_id,
-                   bbc_url, guardian_url, edm_url, wikipedia_url,
-                   official_site_url)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-my $id_sql  = 'SELECT last_insert_id()';
-
-my $upd_sql = 'INSERT INTO constituency (mp, name)
-               VALUES (?, ?)';
-
-my $ins_sth = $dbh->prepare($ins_sql);
-my $id_sth  = $dbh->prepare($id_sql);
-my $upd_sth = $dbh->prepare($upd_sql);
 
 my $i = 1;
 
@@ -63,15 +54,22 @@ foreach (@mps) {
   $_->{edmi} = $doc->findvalue('//edm_ais_url');
   $_->{site} = $doc->findvalue('//mp_website');
 
-  print $i++, ' : ', $_->{name}, ' / ', $_->{constit}, "\n";
+#  print $i++, ' : ', $_->{name}, ' / ', $_->{constit}, "\n";
 
-  $ins_sth->execute($_->{name}, $_->{id}, $_->{image}, $_->{party},
-                    $_->{m_id}, $_->{bbc}, $_->{gu}, $_->{edmi}, $_->{wp},
-                    $_->{site});
-
-  $id_sth->execute;
-  my $id = [$id_sth->fetch]->[0][0];
-  $upd_sth->execute($id, $_->{constit});
+  my $mp = $mp_rs->create({
+    mp_name => $_->{name},
+    twfy_id => $_->{id},
+    image_url => $_->{image},
+    party => $_->{party},
+    # twfy_mem_id => $_->{m_id},
+    bbc_url => $_->{bbc_url},
+    guardian_url => $_->{gu},
+    edm_url => $_->{edmi},
+    wikipedia_url => $_->{wp},
+    # official_site_url => $_->{site},
+  });
+  
+  $mp->add_to_constituencies({ name => $_->{constit} });
 }
 
 

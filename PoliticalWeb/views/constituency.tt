@@ -1,3 +1,4 @@
+[% USE Dumper %]
 [% IF mp.image %]
 <img src="http://www.theyworkforyou.com/[% mp.image %]" align="left"/>
 [% END %]
@@ -16,4 +17,7 @@
 [% IF mp.guardian_aristotle_id %]
 <li><a href="http://www.guardian.co.uk/politics/person/[% mp.guardian_aristotle_id %]">Guardian MP page</a></li>
 [% END %]
+[% FOREACH link IN constit.db.mp.mp_links.list -%]
+<li>[% Dumper.dump(link) %]</li>
+[% END -%]
 </ul>
