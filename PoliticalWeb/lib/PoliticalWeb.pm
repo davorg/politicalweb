@@ -27,7 +27,7 @@ get '/about/' => sub {
 
 get '/constituency/:constname' => sub {
   my $constit = get_const(params->{constname});
-  my $mp      = get_mp($constit->{name});
+  my $mp      = get_mp($constit);
   template 'constituency', {
     constit => $constit,
     mp      => $mp,
@@ -71,9 +71,12 @@ sub get_const_name_from_pc {
 }
 
 sub get_mp {
-  unless (cache_get "M:$_[0]") {
+  my $constit = shift;
+  my $c_name = $constit->{name};
+  
+  unless (cache_get "M:$c_name") {
     my $ret = $twfy->query( 'getMP', {
-      constituency => $_[0],
+      constituency => $c_name,
     });
   
     my $mp;
@@ -89,11 +92,15 @@ sub get_mp {
       
       }
       
-      cache_set "M:$_[0]", $mp, 60*60*60;
+      cache_set "M:$c_name", $mp, 60*60*60;
     }
-    
-    return cache_get "M:$_[0]";
   }
+  
+  my $mp = cache_get "M:$c_name";
+    
+  $mp->{db} = $constit->{db}->mp;
+
+  return $mp;
 }
 
 true;
