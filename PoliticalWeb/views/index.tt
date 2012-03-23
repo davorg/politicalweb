@@ -1,2 +1,7 @@
-      <form><input id="pc" name="pc" value="enter postcode" /></form>
-      <form><input id="constit" name="constit" value="enter constituency name" /></form>
+      <form class=".form-horizontal">
+        <input id="pc" class="span2" name="pc" placeholder="enter postcode" />
+        <br />
+        <input id="constit" name="constit" placeholder="enter constituency name" />
+        <br />
+        <button class="btn btn-small btn-primary">Search</button>
+      </form>

@@ -1,23 +1,35 @@
-[% USE Dumper %]
+<div class="row">
+  <div class="span6">
 [% IF mp.image %]
-<img src="http://www.theyworkforyou.com/[% mp.image %]" align="left"/>
+    <img src="http://www.theyworkforyou.com/[% mp.image %]" align="left"/>
+
 [% END %]
-<h1>[% constit.name %]</h1>
-<h2>[% mp.full_name %] ([% mp.party %])</h2>
-<ul>
+    <h2>[% constit.name %]</h2>
+    <h3>[% mp.full_name %] ([% mp.party %])</h3>
+  </div>
+</div>
+<div class="row>
+  <div class="span6">
+    <ul>
 [% IF mp.extra.wikipedia_url %]
-<li><a href="[% mp.extra.wikipedia_url %]">Wikipedia entry</a></li>
+      <li><a href="[% mp.extra.wikipedia_url %]">Wikipedia entry</a></li>
 [% END %]
-<li><a href="http://theyworkforyou.com/mp/?m=[% mp.member_id %]">They Work For You</a></li>
-<li><a href="http://www.theyworkforyou.com/search/?pid=[% mp.person_id %]">Recent parliamentary appearances</a> <a href="http://www.theyworkforyou.com/search/rss/?s=speaker%3A[% mp.person_id %]"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
-<li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.name %]">Voting record from Public Whip</a></li>
-<li><a href="http://www.edms.org.uk/mps/[% mp.person_id %]/">Early Day Motions</a> <a href="http://www.edms.org.uk/mps/[% mp.member_id %]/index.rss"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
-<li><a href="http://news.google.com/news?as_epq=[% mp.full_name %]&as_loc=uk">Google News Search</a> <a href="http://news.google.com/news?as_loc=uk&q=%22[% mp.full_name %]%22&output=rss"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
-<li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.guardian_id %]">Guardian constituency page</a></li>
-[% IF mp.guardian_aristotle_id %]
-<li><a href="http://www.guardian.co.uk/politics/person/[% mp.guardian_aristotle_id %]">Guardian MP page</a></li>
-[% END %]
-[% FOREACH link IN constit.db.mp.mp_links.list -%]
-<li>[% Dumper.dump(link) %]</li>
+      <li><a href="http://theyworkforyou.com/mp/?m=[% mp.member_id %]">They Work For You</a></li>
+      <li><a href="http://www.theyworkforyou.com/search/?pid=[% mp.person_id %]">Recent parliamentary appearances</a> <a href="http://www.theyworkforyou.com/search/rss/?s=speaker%3A[% mp.person_id %]"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
+      <li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.name %]">Voting record from Public Whip</a></li>
+      <li><a href="http://www.edms.org.uk/mps/[% mp.person_id %]/">Early Day Motions</a> <a href="http://www.edms.org.uk/mps/[% mp.member_id %]/index.rss"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
+      <li><a href="http://news.google.com/news?as_epq=[% mp.full_name %]&as_loc=uk">Google News Search</a> <a href="http://news.google.com/news?as_loc=uk&q=%22[% mp.full_name %]%22&output=rss"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
+      <li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.guardian_id %]">Guardian constituency page</a></li>
+
+[% FOREACH link IN mp.db.mp_links -%]
+      <li><a href="[% link.url %]">[% link.description %]</li>
 [% END -%]
-</ul>
+[% IF mp.guardian_aristotle_id %]
+      <li><a href="http://www.guardian.co.uk/politics/person/[% mp.guardian_aristotle_id %]">Guardian MP page</a></li>
+[% END %]
+[% FOREACH link IN constit.db.constituency_links -%]
+      <li><a href="[% link.url %]">[% link.description %]</li>
+[% END -%]
+    </ul>
+  </div>
+</div>
