@@ -27,6 +27,8 @@ engines:
     start_tag: '[%'
     end_tag:   '%]'
 
+logger: "console"
+
 plugins:
   'Cache::CHI':
     driver: Memcached
