@@ -1,35 +1,51 @@
 <div class="row">
   <div class="span6">
 [% IF mp.image %]
-    <img src="http://www.theyworkforyou.com/[% mp.image %]" align="left"/>
-
+    <img src="http://www.theyworkforyou.com/[% mp.image %]" alt="[% mp.full_name %]" />
 [% END %]
     <h2>[% constit.name %]</h2>
     <h3>[% mp.full_name %] ([% mp.party %])</h3>
   </div>
 </div>
-<div class="row>
+<div class="row">
   <div class="span6">
-    <ul>
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Default</a></li>
+        <li><a href="#tab2" data-toggle="tab">Twitter</a></li>
+        <li><a href="#tab3" data-toggle="tab">Blog</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+          <ul>
 [% IF mp.extra.wikipedia_url %]
-      <li><a href="[% mp.extra.wikipedia_url %]">Wikipedia entry</a></li>
+            <li><a href="[% mp.extra.wikipedia_url %]">Wikipedia entry</a></li>
 [% END %]
-      <li><a href="http://theyworkforyou.com/mp/?m=[% mp.member_id %]">They Work For You</a></li>
-      <li><a href="http://www.theyworkforyou.com/search/?pid=[% mp.person_id %]">Recent parliamentary appearances</a> <a href="http://www.theyworkforyou.com/search/rss/?s=speaker%3A[% mp.person_id %]"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
-      <li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.name %]">Voting record from Public Whip</a></li>
-      <li><a href="http://www.edms.org.uk/mps/[% mp.person_id %]/">Early Day Motions</a> <a href="http://www.edms.org.uk/mps/[% mp.member_id %]/index.rss"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
-      <li><a href="http://www.google.com/search?q=%22[% mp.full_name | url %]%22+mp&gl=uk&tbm=nws">Google News Search</a> <a href="http://news.google.com/news/feeds?q=%22[% mp.full_name | url %]%22+mp&gl=uk&tbm=nws&output=rss"><img src="/feed_sm.png" border="0" alt="web feed" /></a></li>
-      <li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.guardian_id %]">Guardian constituency page</a></li>
+            <li><a href="http://theyworkforyou.com/mp/?m=[% mp.member_id %]">They Work For You</a></li>
+            <li><a href="http://www.theyworkforyou.com/search/?pid=[% mp.person_id %]">Recent parliamentary appearances</a> <a href="http://www.theyworkforyou.com/search/rss/?s=speaker%3A[% mp.person_id %]"><img src="/feed_sm.png" alt="web feed" /></a></li>
+            <li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.name %]">Voting record from Public Whip</a></li>
+            <li><a href="http://www.edms.org.uk/mps/[% mp.person_id %]/">Early Day Motions</a> <a href="http://www.edms.org.uk/mps/[% mp.person_id %]/index.rss"><img src="/feed_sm.png" alt="web feed" /></a></li>
+            <li><a href="http://www.google.com/search?q=%22[% mp.full_name | url %]%22+mp&amp;gl=uk&amp;tbm=nws">Google News Search</a> <a href="http://news.google.com/news/feeds?q=%22[% mp.full_name | url %]%22+mp&amp;gl=uk&amp;tbm=nws&amp;output=rss"><img src="/feed_sm.png" alt="web feed" /></a></li>
+            <li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.guardian_id %]">Guardian constituency page</a></li>
 
 [% FOREACH link IN mp.db.mp_links -%]
-      <li><a href="[% link.url %]">[% link.description %]</li>
+            <li><a href="[% link.url %]">[% link.description %]</li>
 [% END -%]
 [% IF mp.guardian_aristotle_id %]
-      <li><a href="http://www.guardian.co.uk/politics/person/[% mp.guardian_aristotle_id %]">Guardian MP page</a></li>
+            <li><a href="http://www.guardian.co.uk/politics/person/[% mp.guardian_aristotle_id %]">Guardian MP page</a></li>
 [% END %]
 [% FOREACH link IN constit.db.constituency_links -%]
-      <li><a href="[% link.url %]">[% link.description %]</li>
+            <li><a href="[% link.url %]">[% link.description %]</li>
 [% END -%]
-    </ul>
+          </ul>
+        </div>
+        <div class="tab-pane" id="tab2">
+          Twitter here
+        </div>
+        <div class="tab-pane" id="tab3">
+          Blog here
+        </div>
+      </div>
+    </div>
   </div>
 </div>
