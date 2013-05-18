@@ -9,20 +9,18 @@
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/js/bootstrap.js"></script>
     <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span2">
-          <ul class="nav nav-tabs nav-stacked">
+      <div class="navbar navbar-reverse">
+        <div class="navbar-inner">
+          <a class="brand" href="#">The Political Web</a>
+          <ul class="nav">
             <li><a href="/">Home</a></li>
             <li><a href="/about/">About</a></li>
           </ul>
         </div>
-        <div class="span10">
-          <div id="header">
-            <h1>The <i>Political</i> Web</h1>
-          </div>
-          <div id="content">
+      </div>
+      <div class="span8 offset1">
+        <div class="row">
 [% content %]
-          </div>
         </div>
       </div>
     </div>

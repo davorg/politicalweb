@@ -15,11 +15,10 @@
         people at <a href="http://mysociety.org/">MySociety</a> who build
         interesting and useful sites like
         <a href="http://theyworkforyou.com/">TheyWorkForYou</a>.</p>
-      <p>So that's what we've got for now. Type your postcode into the box
-        on our <a href="/">front page</a> and you'll get back a list of
-        useful web links about your constituency and your MP. This list
-        is in a state of flux - we'll be adding to it over the forthcoming
-        weeks.</p>
+      <p>So that's what we've got for now. Type your postcode or a constituency
+        name into the box on our <a href="/">front page</a> and you'll get back
+        a list of useful web links about your constituency and your MP. This
+        list is in a state of flux - we'll be adding to it in the future.</p>
 
       <h2>Technical Stuff</h2>
       <p>The site is written using a standard
@@ -33,6 +32,10 @@
         <a href="http://perldancer.org"/>Dancer</a> framework (with a little
         bit of <a href="http://en.wikipedia.org/wiki/Javascript">Javascript</a>
         on the side).</p>
+      <p>The look of the site is created using
+        <a href="http://twitter.github.io/">Twitter Bootstrap</a> together with
+        the <a href="http://bootswatch.com/readable/">Readable</a> theme from
+        <a href="http://bootswatch.com/">Bootswatch</a>.</p>
 
       <p>The code is licensed under the same terms as
         Perl itself (i.e. your choice of the

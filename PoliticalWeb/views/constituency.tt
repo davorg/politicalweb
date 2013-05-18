@@ -1,13 +1,14 @@
-<div class="row">
-  <div class="span6">
+  <div class="span10 media">
 [% IF mp.image %]
-    <img src="http://www.theyworkforyou.com/[% mp.image %]" alt="[% mp.full_name %]" />
+    <a class="pull-left" href="#">
+      <img class="media-object" src="http://www.theyworkforyou.com/[% mp.image %]" alt="[% mp.full_name %]" />
+    </a>
 [% END %]
-    <h2>[% constit.name %]</h2>
-    <h3>[% mp.full_name %] ([% mp.party %])</h3>
+    <div class="media-body">
+      <h2>[% constit.name %]</h2>
+      <h3>[% mp.full_name %] ([% mp.party %])</h3>
+    </div>
   </div>
-</div>
-<div class="row">
   <div class="span6">
     <div class="tabbable">
       <ul class="nav nav-tabs">
@@ -23,7 +24,7 @@
 [% END %]
             <li><a href="http://theyworkforyou.com/mp/?m=[% mp.member_id %]">They Work For You</a></li>
             <li><a href="http://www.theyworkforyou.com/search/?pid=[% mp.person_id %]">Recent parliamentary appearances</a> <a href="http://www.theyworkforyou.com/search/rss/?s=speaker%3A[% mp.person_id %]"><img src="/feed_sm.png" alt="web feed" /></a></li>
-            <li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.name %]">Voting record from Public Whip</a></li>
+            <li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.name.replace(' ', '+') %]">Voting record from Public Whip</a></li>
             <li><a href="http://www.edms.org.uk/mps/[% mp.person_id %]/">Early Day Motions</a> <a href="http://www.edms.org.uk/mps/[% mp.person_id %]/index.rss"><img src="/feed_sm.png" alt="web feed" /></a></li>
             <li><a href="http://www.google.com/search?q=%22[% mp.full_name | url %]%22+mp&amp;gl=uk&amp;tbm=nws">Google News Search</a> <a href="http://news.google.com/news/feeds?q=%22[% mp.full_name | url %]%22+mp&amp;gl=uk&amp;tbm=nws&amp;output=rss"><img src="/feed_sm.png" alt="web feed" /></a></li>
             <li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.guardian_id %]">Guardian constituency page</a></li>
@@ -40,8 +41,7 @@
           </ul>
         </div>
         <div class="tab-pane" id="tab2">
-<a class="twitter-timeline" href="https://twitter.com/NadineDorriesMP" data-widget-id="335493382254239744">Tweets by @NadineDorriesMP</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          Twitter here
         </div>
         <div class="tab-pane" id="tab3">
           Blog here
@@ -49,4 +49,3 @@
       </div>
     </div>
   </div>
-</div>

@@ -1,7 +1,13 @@
-      <form class=".form-horizontal">
-        <input id="pc" class="span2" name="pc" placeholder="enter postcode" />
-        <br />
-        <input id="constit" name="constit" placeholder="enter constituency name" />
-        <br />
-        <button class="btn btn-small btn-primary">Search</button>
-      </form>
+<div class="hero-unit">
+  <h1>The Political Web</h1>
+  <p>What does the web know about your MP?</p>
+  <p>Start by entering your details below.</p>
+  <form>
+    <fieldset>
+    <input id="pc" class="span2" name="pc" placeholder="enter postcode" />
+    or
+    <input id="constit" name="constit" placeholder="enter constituency name" />
+    <button class="btn btn-small btn-primary">Search</button>
+    </fieldset>
+  </form>
+</div>
