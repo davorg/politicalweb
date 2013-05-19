@@ -4,6 +4,7 @@ use Dancer::Plugin::DBIC;
 use Dancer::Plugin::Cache::CHI;
 use WebService::TWFY::API;
 use Data::Dumper;
+use Encode qw[encode decode];
 
 my $twfy = WebService::TWFY::API->new({
   key => $ENV{TWFY_KEY}
@@ -50,19 +51,22 @@ get '/constituencies/' => sub {
 
 sub get_const {
   my ($con, $ret);
+  if ($_[0] =~ /Ynys M/) {
+    $_[0] = 'Ynys Môn';
+  }
   unless ($con = cache_get "C:$_[0]") {
     $ret = $twfy->query( 'getConstituency', {
-      name => $_[0],
+      name => encode('iso-8859-1', $_[0]),
       postcode => '',
     });
 
     debug Dumper $ret;
 
     if ($ret->{is_success}) {
-      $con = from_json($ret->{results});
+      $con = from_json(encode('utf8', $ret->{results}));
       return if $con->{error};
       debug "Setting cache key - 'C:$_[0]'";
-      debug 'Setting cache val - ' . Dumper(from_json($ret->{results}));
+      debug 'Setting cache val - ' . Dumper(from_json(encode('utf8', $ret->{results})));
       cache_set "C:$_[0]", $con, 60*60*60;
     } else {
       return;
@@ -82,7 +86,8 @@ sub get_const_name_from_pc {
   });
     
   if ($ret->{is_success}) {
-    my $constit = from_json($ret->{results});
+    my $constit = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));
+    debug Dumper $constit;
     return if $constit->{error};
     cache_set 'C:' . $constit->{name}, $constit, 60*60*60;
     return $constit->{name};
@@ -98,13 +103,13 @@ sub get_mp {
   my $mp;
   unless ($mp = cache_get "M:$c_name") {
     my $ret = $twfy->query( 'getMP', {
-      constituency => $c_name,
+      constituency => encode('iso-8859-1', $c_name),
     });
 
-    debug "TWFY: $ret";
+    debug Dumper $ret;
 
     if ($ret->{is_success}) {
-      $mp = from_json($ret->{results});
+      $mp = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));
       return if $mp->{error};
 
       debug Dumper $mp;
@@ -114,7 +119,7 @@ sub get_mp {
       });
     
       if ($ret->{is_success}) {
-        $mp->{extra} = from_json($ret->{results});
+        $mp->{extra} = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));
       
       }
       
