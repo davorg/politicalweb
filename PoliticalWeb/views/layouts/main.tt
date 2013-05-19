@@ -14,6 +14,7 @@
           <a class="brand" href="#">The Political Web</a>
           <ul class="nav">
             <li><a href="/">Home</a></li>
+            <li><a href="/constituencies/">Constituencies</a></li>
             <li><a href="/about/">About</a></li>
           </ul>
         </div>

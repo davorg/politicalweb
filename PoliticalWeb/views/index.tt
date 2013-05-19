@@ -2,7 +2,10 @@
   <h1>The Political Web</h1>
   <p>What does the web know about your MP?</p>
   <p>Start by entering your details below.</p>
-  <form>
+[% IF error -%]
+  <p class="alert alert-error">[% error %] does not exist. Please try again.
+[% END -%]
+  <form action="/">
     <fieldset>
     <input id="pc" class="span2" name="pc" placeholder="enter postcode" />
     or
