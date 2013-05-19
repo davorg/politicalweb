@@ -30,7 +30,9 @@ get '/' => sub {
 };
 
 get '/about/' => sub {
-  template 'about/index';  
+  my $page = template 'about/index';
+  cache_page $page;
+  return $page;  
 };
 
 get '/constituency/:constname' => sub {
@@ -38,10 +40,12 @@ get '/constituency/:constname' => sub {
   my $mp      = get_mp($constit) if $constit;
 
   if ($constit && $mp) {
-    template 'constituency', {
+    my $page = template 'constituency', {
       constit => $constit,
       mp      => $mp,
     };
+    cache_page $page;
+    return $page;
   } else {
     template 'index', { error => 'Constituency "' . params->{constname} . '"' };
   }
