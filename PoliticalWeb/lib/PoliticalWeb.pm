@@ -14,6 +14,8 @@ my $mp_rs  = schema->resultset('Mp');
 
 our $VERSION = '0.1';
 
+check_page_cache;
+
 get '/' => sub {
   return template 'index' unless keys %{ +params };
 
@@ -46,7 +48,11 @@ get '/constituency/:constname' => sub {
 };
 
 get '/constituencies/' => sub {
-  template 'constituencies/index', { constits => [ $con_rs->search({}, { order_by => 'name'} )->all ] };
+  my $page = template 'constituencies/index', {
+    constits => [ $con_rs->search({}, { order_by => 'name'} )->all ]
+  };
+  cache_page $page;
+  return $page;
 };
 
 sub get_const {
