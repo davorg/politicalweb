@@ -3,7 +3,7 @@
   <p>What does the web know about your MP?</p>
   <p>Start by entering your details below.</p>
 [% IF error -%]
-  <p class="alert alert-error">[% error %] does not exist. Please try again.
+  <p class="alert alert-error">[% error %] does not exist. Please try again.</p>
 [% END -%]
   <form action="/">
     <fieldset>
@@ -13,4 +13,6 @@
     <button class="btn btn-small btn-primary">Search</button>
     </fieldset>
   </form>
+  <p>Alternatively, browse the
+  <a href="http://[% request.host %]/constituencies/">list of constituencies</a>.</p>
 </div>
