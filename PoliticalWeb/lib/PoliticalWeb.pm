@@ -14,14 +14,16 @@ my $mp_rs  = schema->resultset('Mp');
 our $VERSION = '0.1';
 
 get '/' => sub {
+  return template 'index' unless keys %{ +params };
+
   if (params->{pc}) {
     params->{constit} = get_const_name_from_pc(params->{pc});
   }
   if (params->{constit}) {
-    redirect '/constituency/' . params->{constit};
+    redirect 'http://' . request->host . '/constituency/' . params->{constit};
   }
   
-  template 'index';
+  template 'index', { error => 'Postcode "' . params->{pc} . '"' };
 };
 
 get '/about/' => sub {
@@ -30,11 +32,20 @@ get '/about/' => sub {
 
 get '/constituency/:constname' => sub {
   my $constit = get_const(params->{constname});
-  my $mp      = get_mp($constit);
-  template 'constituency', {
-    constit => $constit,
-    mp      => $mp,
-  };
+  my $mp      = get_mp($constit) if $constit;
+
+  if ($constit && $mp) {
+    template 'constituency', {
+      constit => $constit,
+      mp      => $mp,
+    };
+  } else {
+    template 'index', { error => 'Constituency "' . params->{constname} . '"' };
+  }
+};
+
+get '/constituencies/' => sub {
+  template 'constituencies/index', { constits => [ $con_rs->search({}, { order => 'name'} )->all ] };
 };
 
 sub get_const {
@@ -48,10 +59,13 @@ sub get_const {
     debug Dumper $ret;
 
     if ($ret->{is_success}) {
+      $con = from_json($ret->{results});
+      return if $con->{error};
       debug "Setting cache key - 'C:$_[0]'";
       debug 'Setting cache val - ' . Dumper(from_json($ret->{results}));
-      $con = from_json($ret->{results});
       cache_set "C:$_[0]", $con, 60*60*60;
+    } else {
+      return;
     }
   }
 
@@ -69,6 +83,7 @@ sub get_const_name_from_pc {
     
   if ($ret->{is_success}) {
     my $constit = from_json($ret->{results});
+    return if $constit->{error};
     cache_set 'C:' . $constit->{name}, $constit, 60*60*60;
     return $constit->{name};
   }
@@ -90,6 +105,7 @@ sub get_mp {
 
     if ($ret->{is_success}) {
       $mp = from_json($ret->{results});
+      return if $mp->{error};
 
       debug Dumper $mp;
 
@@ -103,6 +119,8 @@ sub get_mp {
       }
       
       cache_set "M:$c_name", $mp, 60*60*60;
+    } else {
+      return;
     }
   }
 
