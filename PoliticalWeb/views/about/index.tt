@@ -3,7 +3,7 @@
       <p>More and more information about British politics is available on
         various web sites. Some of it is easy to find. Some of it isn't.
         Some of it is widely promoted. Some is pretty much hidden.</p>
-      <p>Here on Political Web we intend to track down as much of this
+      <p>Here on The Political Web we intend to track down as much of this
         information as possible and make it easy for the public to find.</p>
       <p>We are starting with MPs and constituencies. We are trying to
         create a directory of web sites about either MPs or constituencies.</p>
@@ -19,6 +19,9 @@
         name into the box on our <a href="/">front page</a> and you'll get back
         a list of useful web links about your constituency and your MP. This
         list is in a state of flux - we'll be adding to it in the future.</p>
+      <p>The Political Web has been built by
+        <a href="http://twitter.com/davorg">Dave Cross</a>, who would love to
+        hear from you if you find it useful.</p>
 
       <h2>Technical Stuff</h2>
       <p>The site is written using a standard
