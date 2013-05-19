@@ -1,0 +1,6 @@
+<h1>Constituencies</h1>
+<table class="table table-striped table-condensed table-bordered">
+[% FOREACH c IN constits -%]
+<tr><td><a href="/constituency/[% c.name %]">[% c.name %]</a></td></tr>
+[% END -%]
+</tsble>
