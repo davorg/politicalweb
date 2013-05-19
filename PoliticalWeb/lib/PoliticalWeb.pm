@@ -46,7 +46,7 @@ get '/constituency/:constname' => sub {
 };
 
 get '/constituencies/' => sub {
-  template 'constituencies/index', { constits => [ $con_rs->search({}, { order => 'name'} )->all ] };
+  template 'constituencies/index', { constits => [ $con_rs->search({}, { order_by => 'name'} )->all ] };
 };
 
 sub get_const {
