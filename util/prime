@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use 5.010;
+
+use WebService::TWFY::API;
+use XML::LibXML;
+use LWP::Simple;
+
+my $api = WebService::TWFY::API->new(
+  { key => $ENV{TWFY_KEY} }
+);
+
+my $doc = twfy_qry('getConstituencies', $api);
+
+foreach ($doc->findnodes('//name')) {
+  say my $n = $_->findvalue('.');
+  get "http://politicalweb.org.uk/constituency/$n";
+}
+
+sub twfy_qry {
+  my ($qry, $api, $params) = @_;
+
+  $params = {} unless defined $params;
+
+  $params = { output => 'xml', %$params };
+
+  my $rc = $api->query($qry, $params);
+  
+  die $rc->{error_code} unless $rc->is_success;
+
+  unless ($rc->{results}) {
+    warn 'Weirdness!';
+    return;
+  }
+
+  return XML::LibXML->new->parse_string($rc->{results});
+}
