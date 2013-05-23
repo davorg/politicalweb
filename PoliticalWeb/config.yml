@@ -7,7 +7,7 @@ appname: "PoliticalWeb"
 
 # The default layout to use for your application (located in
 # views/layouts/main.tt)
-layout: "main"
+# layout: "main"
 
 # when the charset is set to UTF-8 Dancer will handle for you
 # all the magic of encoding and decoding. You should not care
@@ -23,6 +23,7 @@ charset: "UTF-8"
 template: "template_toolkit"
 engines:
   template_toolkit:
+    WRAPPER:   layouts/main.tt
     encoding:  'utf8'
     start_tag: '[%'
     end_tag:   '%]'
