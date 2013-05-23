@@ -1,3 +1,4 @@
+[% META name="home" -%]
 <div class="hero-unit">
   <h1>The Political Web</h1>
   <p>What does the web know about your MP?</p>
