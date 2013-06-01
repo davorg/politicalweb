@@ -60,30 +60,49 @@ get '/constituencies/' => sub {
 };
 
 sub get_const {
-  my ($con, $ret);
   if ($_[0] =~ /Ynys M/) {
     $_[0] = 'Ynys Môn';
   }
-  unless ($con = cache_get "C:$_[0]") {
-    $ret = $twfy->query( 'getConstituency', {
-      name => encode('iso-8859-1', $_[0]),
-      postcode => '',
-    });
 
-    debug Dumper $ret;
+  return get_const_from_cache(@_)
+    || get_const_from_db(@_)
+    || get_const_from_twfy(@_);
+}
 
-    if ($ret->{is_success}) {
-      $con = from_json(encode('utf8', $ret->{results}));
-      return if $con->{error};
-      debug "Setting cache key - 'C:$_[0]'";
-      debug 'Setting cache val - ' . Dumper(from_json(encode('utf8', $ret->{results})));
-      cache_set "C:$_[0]", $con, 60*60*60;
-    } else {
-      return;
-    }
+sub get_const_from_cache {
+  debug "get_const_from_cache: @_";
+
+  return cache_get "C:$_[0]";
+}
+
+sub get_const_from_db {
+  debug "get_const_from_db: @_";
+  return;
+}
+
+sub get_const_from_twfy {
+  debug "get_const_from_twfy: @_";
+
+  my ($con, $ret);
+
+  $ret = $twfy->query( 'getConstituency', {
+    name => encode('iso-8859-1', $_[0]),
+    postcode => '',
+  });
+
+  # debug Dumper $ret;
+
+  if ($ret->{is_success}) {
+    $con = from_json(encode('utf8', $ret->{results}));
+    return if $con->{error};
+    # debug "Setting cache key - 'C:$_[0]'";
+    # debug 'Setting cache val - ' . Dumper(from_json(encode('utf8', $ret->{results})));
+    cache_set "C:$_[0]", $con, 60*60*60;
+  } else {
+    return;
   }
 
-  debug Dumper $con;
+  # debug Dumper $con;
   
   $con->{db} = $con_rs->find_or_create({ name => $con->{name} });
   
@@ -97,7 +116,7 @@ sub get_const_name_from_pc {
     
   if ($ret->{is_success}) {
     my $constit = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));
-    debug Dumper $constit;
+    # debug Dumper $constit;
     return if $constit->{error};
     cache_set 'C:' . $constit->{name}, $constit, 60*60*60;
     return $constit->{name};
@@ -108,40 +127,54 @@ sub get_const_name_from_pc {
 
 sub get_mp {
   my $constit = shift;
-  my $c_name = $constit->{name};
-
-  my $mp;
-  unless ($mp = cache_get "M:$c_name") {
-    my $ret = $twfy->query( 'getMP', {
-      constituency => encode('iso-8859-1', $c_name),
-    });
-
-    debug Dumper $ret;
-
-    if ($ret->{is_success}) {
-      $mp = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));
-      return if $mp->{error};
-
-      debug Dumper $mp;
-
-      my $ret = $twfy->query( 'getMPInfo', {
-        id => $mp->{person_id},
-      });
-    
-      if ($ret->{is_success}) {
-        $mp->{extra} = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));
-      
-      }
-      
-      cache_set "M:$c_name", $mp, 60*60*60;
-    } else {
-      return;
-    }
-  }
-
-  debug "TWFY: MP is " . Dumper $mp;
+  my $mp = get_mp_from_cache($constit->{name})
+    || get_mp_from_db($constit->{name})
+    || get_mp_from_twfy($constit->{name});
 
   $mp->{db} = $constit->{db}->mp;
+  return $mp;
+}
+
+sub get_mp_from_cache {
+  debug "get_mp_from_cache: @_";
+
+  return cache_get "M:$_[0]";
+}
+
+sub get_mp_from_db {
+  debug "get_mp_from_db: @_";
+  return;
+}
+
+sub get_mp_from_twfy {
+  debug "get_mp_from_twfy: @_";
+  my $mp;
+  my $ret = $twfy->query( 'getMP', {
+    constituency => encode('iso-8859-1', $_[0]),
+  });
+
+  # debug Dumper $ret;
+
+  if ($ret->{is_success}) {
+    $mp = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));
+    return if $mp->{error};
+
+    # debug Dumper $mp;
+
+    my $ret = $twfy->query( 'getMPInfo', {
+      id => $mp->{person_id},
+    });
+    
+    if ($ret->{is_success}) {
+      $mp->{extra} = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));   
+    }
+
+    cache_set "M:$_[0]", $mp, 60*60*60;
+  } else {
+    return;
+  }
+
+  # debug "TWFY: MP is " . Dumper $mp;
 
   return $mp;
 }
