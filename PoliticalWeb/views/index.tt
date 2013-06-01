@@ -4,13 +4,13 @@
   <p>What does the web know about your MP?</p>
   <p>Start by entering your details below.</p>
 [% IF error -%]
-  <p class="alert alert-error">[% error %] does not exist. Please try again.</p>
+  <div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>[% error %] does not exist. Please try again.</div>
 [% END -%]
   <form action="/">
     <fieldset>
     <input id="pc" class="span2" name="pc" placeholder="enter postcode" />
     or
-    <input id="constit" name="constit" placeholder="enter constituency name" />
+    <input id="constit" name="constit" placeholder="enter constituency name" autocomplete="off" data-provide="typeahead" />
     <button class="btn btn-small btn-primary">Search</button>
     </fieldset>
   </form>
