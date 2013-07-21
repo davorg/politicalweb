@@ -35,6 +35,10 @@ get '/about/' => sub {
   return $page;  
 };
 
+get '/constituency/?' => sub {
+  template 'index', { error => 'That constituency' };
+};
+
 get '/constituency/:constname' => sub {
   my $constit = get_const(params->{constname});
   my $mp      = get_mp($constit) if $constit;
