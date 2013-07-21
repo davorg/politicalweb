@@ -180,6 +180,16 @@ sub get_mp_from_twfy {
 
   # debug "TWFY: MP is " . Dumper $mp;
 
+  $mp->{db} = schema->resultset('Mp')->find_or_create({
+    mp_name => $mp->{full_name},
+    twfy_id => $mp->{person_id},
+  });
+
+  my ($con_db) = schema->resultset('Constituency')->find_or_create({
+    name => $_[0],
+  });
+  $con_db->update({ mp => $mp->{db}->id });
+
   return $mp;
 }
 
