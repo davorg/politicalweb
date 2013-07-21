@@ -5,6 +5,7 @@ $(document).ready(function () {
     limit: 10,
     dateformat: 'timeline',
     content: false,
+    titletag: 'span',
     sort: 'date',
     sortasc: false
   });
