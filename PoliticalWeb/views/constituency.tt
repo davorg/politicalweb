@@ -1,3 +1,15 @@
+    <script src="/js/jquery.zrssfeed.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+$(document).ready(function () {
+  $('#news').rssfeed('https://news.google.com/news/feeds?ned=uk&output=rss&q=[% mp.full_name %]+MP', {
+    limit: 10,
+    dateformat: 'timeline',
+    content: false,
+    sort: 'date',
+    sortasc: false
+  });
+});
+</script>
 [% META title = 'Constituency' -%]
   <div class="span10 media">
 [% IF mp.image %]
@@ -13,12 +25,13 @@
   <div class="span6">
     <div class="tabbable">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Default</a></li>
-        <li><a href="#tab2" data-toggle="tab">Twitter</a></li>
-        <li><a href="#tab3" data-toggle="tab">Blog</a></li>
+        <li class="active"><a href="#default" data-toggle="tab">Default</a></li>
+        <li><a href="#news" data-toggle="tab">News</a></li>
+        <li><a href="#twitter" data-toggle="tab">Twitter</a></li>
+        <li><a href="#blog" data-toggle="tab">Blog</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
+        <div class="tab-pane active" id="default">
           <ul>
 [% IF mp.extra.wikipedia_url %]
             <li><a href="[% mp.extra.wikipedia_url %]">Wikipedia entry</a></li>
@@ -41,10 +54,12 @@
 [% END -%]
           </ul>
         </div>
-        <div class="tab-pane" id="tab2">
+        <div class="tab-pane" id="news">
+        </div>
+        <div class="tab-pane" id="twitter">
           Twitter here
         </div>
-        <div class="tab-pane" id="tab3">
+        <div class="tab-pane" id="blog">
           Blog here
         </div>
       </div>
