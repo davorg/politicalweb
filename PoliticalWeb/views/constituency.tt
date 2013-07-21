@@ -41,7 +41,6 @@ $(document).ready(function () {
             <li><a href="http://www.theyworkforyou.com/search/?pid=[% mp.person_id %]">Recent parliamentary appearances</a> <a href="http://www.theyworkforyou.com/search/rss/?s=speaker%3A[% mp.person_id %]"><img src="/feed_sm.png" alt="web feed" /></a></li>
             <li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.name.replace(' ', '+') %]">Voting record from Public Whip</a></li>
             <li><a href="http://www.edms.org.uk/mps/[% mp.person_id %]/">Early Day Motions</a> <a href="http://www.edms.org.uk/mps/[% mp.person_id %]/index.rss"><img src="/feed_sm.png" alt="web feed" /></a></li>
-            <li><a href="http://www.google.com/search?q=%22[% mp.full_name | url %]%22+mp&amp;gl=uk&amp;tbm=nws">Google News Search</a> <a href="http://news.google.com/news/feeds?q=%22[% mp.full_name | url %]%22+mp&amp;gl=uk&amp;tbm=nws&amp;output=rss"><img src="/feed_sm.png" alt="web feed" /></a></li>
             <li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.guardian_id %]">Guardian constituency page</a></li>
 
 [% FOREACH link IN mp.db.mp_links -%]
