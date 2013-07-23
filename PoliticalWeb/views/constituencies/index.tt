@@ -1,9 +1,25 @@
 [% META title = 'Constituencies',
         name  = 'constituencies' -%]
 <h1>Constituencies</h1>
+[% prev_letter = '';
+   letters = [];
+   FOREACH c IN constits;
+     letter = c.name.substr(0, 1);
+     IF letter != prev_letter;
+       letters.push('<a href="#' _ letter _ '">' _ letter _ '</a>');
+       prev_letter = letter;
+     END;
+   END %]
+<p>Jump to: [% letters.join(' | ') %]</p>
 <table class="table table-striped table-condensed table-bordered">
-[% FOREACH c IN constits -%]
+[% prev_letter = '';
+   FOREACH c IN constits;
+     letter = c.name.substr(0, 1);
+     IF letter != prev_letter -%]
+<tr><th><a name="[% letter %]">[% letter %]</a></th></tr>
+[%   END -%]
 <tr><td><a href="/constituency/[% c.name %]">[% c.name %]</a></td></tr>
-[% END -%]
+[%   prev_letter = letter;
+   END -%]
 </table>
 
