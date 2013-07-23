@@ -1,17 +1,21 @@
+use utf8;
 package PoliticalWeb::Schema::Result::MpLink;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PoliticalWeb::Schema::Result::MpLink
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PoliticalWeb::Schema::Result::MpLink
+=head1 TABLE: C<mp_link>
 
 =cut
 
@@ -62,6 +66,17 @@ __PACKAGE__->add_columns(
   "mp",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -81,14 +96,14 @@ __PACKAGE__->belongs_to(
   {
     is_deferrable => 1,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-03-18 16:38:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5Wf8X81TbVgUsIp/ahdu2w
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-23 16:14:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:B2e4gMt0JIcjEy0l/xgePw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

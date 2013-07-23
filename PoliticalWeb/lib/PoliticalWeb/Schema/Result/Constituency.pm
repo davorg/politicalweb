@@ -1,17 +1,21 @@
+use utf8;
 package PoliticalWeb::Schema::Result::Constituency;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PoliticalWeb::Schema::Result::Constituency
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PoliticalWeb::Schema::Result::Constituency
+=head1 TABLE: C<constituency>
 
 =cut
 
@@ -47,29 +51,20 @@ __PACKAGE__->add_columns(
   "mp",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
 );
-__PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 mp
+=over 4
 
-Type: belongs_to
+=item * L</id>
 
-Related object: L<PoliticalWeb::Schema::Result::Mp>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "mp",
-  "PoliticalWeb::Schema::Result::Mp",
-  { id => "mp" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
 
 =head2 constituency_links
 
@@ -86,19 +81,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 urls
+=head2 mp
 
-Type: has_many
+Type: belongs_to
 
-Related object: L<PoliticalWeb::Schema::Result::Url>
+Related object: L<PoliticalWeb::Schema::Result::Mp>
 
 =cut
 
-__PACKAGE__->has_many(
-  "urls",
-  "PoliticalWeb::Schema::Result::Url",
-  { "foreign.constituency" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+__PACKAGE__->belongs_to(
+  "mp",
+  "PoliticalWeb::Schema::Result::Mp",
+  { id => "mp" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "RESTRICT",
+    on_update     => "RESTRICT",
+  },
 );
 
 =head2 user_constituencies
@@ -117,8 +117,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-03-18 16:38:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hzCQrsZiMUwIMBxUwQJoPA
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-07-23 16:14:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:M8D5lj7A3oC2eeX/pn9+DQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

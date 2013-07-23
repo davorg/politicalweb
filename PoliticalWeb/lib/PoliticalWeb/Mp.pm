@@ -23,6 +23,7 @@ has twfy => (
 has db => (
   is   => 'rw',
   isa  => 'PoliticalWeb::Schema::Result::Mp',
+  handles => [qw(twitter)],
 );
 
 sub new_from_constituency_name {
