@@ -26,13 +26,17 @@ $(document).ready(function () {
   <div class="span6">
     <div class="tabbable">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#default" data-toggle="tab">Default</a></li>
+        <li class="active"><a href="#links" data-toggle="tab">Links</a></li>
         <li><a href="#news" data-toggle="tab">News</a></li>
+[% IF mp.twitter -%]
         <li><a href="#twitter" data-toggle="tab">Twitter</a></li>
+[% END -%]
+[% IF mp.blog -%]
         <li><a href="#blog" data-toggle="tab">Blog</a></li>
+[% END -%]
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="default">
+        <div class="tab-pane active" id="links">
           <ul>
 [% IF mp.extra.wikipedia_url %]
             <li><a href="[% mp.extra.wikipedia_url %]">Wikipedia entry</a></li>
@@ -64,9 +68,11 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
 <!-- END: Twitter website widget (http://twitterforweb.com) -->
         </div>
 [% END %]
+[% IF mp.blog -%]
         <div class="tab-pane" id="blog">
           Blog here
         </div>
+[% END %]
       </div>
     </div>
   </div>
