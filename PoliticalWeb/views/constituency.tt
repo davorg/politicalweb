@@ -13,14 +13,14 @@ $(document).ready(function () {
 </script>
 [% META title = 'Constituency' -%]
   <div class="span10 media">
-[% IF mp.image %]
+[% IF mp.twfy.image %]
     <a class="pull-left" href="#">
-      <img class="media-object" src="http://www.theyworkforyou.com/[% mp.image %]" alt="[% mp.full_name %]" />
+      <img class="media-object" src="http://www.theyworkforyou.com/[% mp.twfy.image %]" alt="[% mp.twfy.full_name %]" />
     </a>
 [% END %]
     <div class="media-body">
-      <h2>[% constit.name %]</h2>
-      <h3>[% mp.full_name %] ([% mp.party %])</h3>
+      <h2>[% constit.twfy.name %]</h2>
+      <h3>[% mp.twfy.full_name %] ([% mp.twfy.party %])</h3>
     </div>
   </div>
   <div class="span6">
@@ -38,20 +38,20 @@ $(document).ready(function () {
       <div class="tab-content">
         <div class="tab-pane active" id="links">
           <ul>
-[% IF mp.extra.wikipedia_url %]
-            <li><a href="[% mp.extra.wikipedia_url %]">Wikipedia entry</a></li>
+[% IF mp.twfy.extra.wikipedia_url %]
+            <li><a href="[% mp.twfy.extra.wikipedia_url %]">Wikipedia entry</a></li>
 [% END %]
-            <li><a href="http://theyworkforyou.com/mp/?m=[% mp.member_id %]">They Work For You</a></li>
-            <li><a href="http://www.theyworkforyou.com/search/?pid=[% mp.person_id %]">Recent parliamentary appearances</a> <a href="http://www.theyworkforyou.com/search/rss/?s=speaker%3A[% mp.person_id %]"><img src="/feed_sm.png" alt="web feed" /></a></li>
-            <li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.name.replace(' ', '+') %]">Voting record from Public Whip</a></li>
-            <li><a href="http://www.edms.org.uk/mps/[% mp.person_id %]/">Early Day Motions</a> <a href="http://www.edms.org.uk/mps/[% mp.person_id %]/index.rss"><img src="/feed_sm.png" alt="web feed" /></a></li>
-            <li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.guardian_id %]">Guardian constituency page</a></li>
+            <li><a href="http://theyworkforyou.com/mp/?m=[% mp.twfy.member_id %]">They Work For You</a></li>
+            <li><a href="http://www.theyworkforyou.com/search/?pid=[% mp.twfy.person_id %]">Recent parliamentary appearances</a> <a href="http://www.theyworkforyou.com/search/rss/?s=speaker%3A[% mp.twfy.person_id %]"><img src="/feed_sm.png" alt="web feed" /></a></li>
+            <li><a href="http://publicwhip.org.uk/mp.php?constituency=[% constit.twfy.name.replace(' ', '+') %]">Voting record from Public Whip</a></li>
+            <li><a href="http://www.edms.org.uk/mps/[% mp.twfy.person_id %]/">Early Day Motions</a> <a href="http://www.edms.org.uk/mps/[% mp.twfy.person_id %]/index.rss"><img src="/feed_sm.png" alt="web feed" /></a></li>
+            <li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.twfy.guardian_id %]">Guardian constituency page</a></li>
 
 [% FOREACH link IN mp.db.mp_links -%]
             <li><a href="[% link.url %]">[% link.description %]</li>
 [% END -%]
 [% IF mp.guardian_aristotle_id %]
-            <li><a href="http://www.guardian.co.uk/politics/person/[% mp.guardian_aristotle_id %]">Guardian MP page</a></li>
+            <li><a href="http://www.guardian.co.uk/politics/person/[% mp.twfy.guardian_aristotle_id %]">Guardian MP page</a></li>
 [% END %]
 [% FOREACH link IN constit.db.constituency_links -%]
             <li><a href="[% link.url %]">[% link.description %]</li>
