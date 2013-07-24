@@ -33,6 +33,8 @@ sub new_from_constituency_name {
   my $twfy = _get_from_cache($constit_name) || _get_from_twfy($constit_name);
   my $db   = _get_from_db($constit_name, $twfy);
 
+  return unless $twfy && $db;
+
   return $class->new({ twfy => $twfy, db => $db });
 }
 

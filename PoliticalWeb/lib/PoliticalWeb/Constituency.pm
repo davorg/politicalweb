@@ -58,6 +58,8 @@ sub new_from_name {
   my $twfy = _get_from_cache($name) || _get_from_twfy($name);
   my $db   = _get_from_db($name);
 
+  return unless $twfy && $db;
+
   return $class->new({ twfy => $twfy, db => $db });
 }
 
