@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use 5.010;
+
+use lib 'PoliticalWeb/lib';
+use PoliticalWeb::Schema;
+use Text::ParseWords;
+use Data::Dumper;
+
+open my $file, '<', 'constit.csv' or die $!;
+
+my $sch = PoliticalWeb::Schema->connect(
+  'dbi:mysql:hostname=mag-sol.com:database=politicalweb',
+  'politicalweb', 'p0l171c4lw3b',
+);
+
+my $mp_rs = $sch->resultset('Mp');
+my @cols = qw[name twitter constit];
+while (<$file>) {
+  chomp;
+  my %rec;
+  @rec{@cols} = parse_line(',', 0, $_);
+  say Dumper \%rec;
+
+  if (my ($mp) = $mp_rs->search({mp_name => $rec{name}})) {
+    $mp->update({twitter => $rec{twitter}});
+  } else {
+    warn "No match for $rec{name}\n";
+  }
+}

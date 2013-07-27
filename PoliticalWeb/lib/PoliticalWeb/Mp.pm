@@ -82,4 +82,30 @@ sub _get_from_db {
   });  
 }
 
+sub blog {
+  my $self = shift;
+
+  return $self->get_link('blog');
+}
+
+sub blog_feed {
+  my $self = shift;
+
+  return $self->get_link('blogfeed');
+}
+
+
+sub get_link {
+  my $self = shift;
+  my $type = shift;
+
+  my ($link) = $self->db->mp_links({
+    type => $type,
+  });
+
+  return unless $link;
+  return $link->url;
+}
+
+
 1;
