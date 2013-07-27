@@ -9,6 +9,16 @@ $(document).ready(function () {
     sort: 'date',
     sortasc: false
   });
+[% IF mp.blog -%]
+  $('#blog').rssfeed('[% mp.blog_feed %]', {
+    limit: 10,
+    dateformat: 'timeline',
+    content: false,
+    titletag: 'span',
+    sort: 'date',
+    sortasc: false
+  });
+[% END -%]
 });
 </script>
 [% META title = 'Constituency' -%]
@@ -48,7 +58,7 @@ $(document).ready(function () {
             <li><a href="http://www.guardian.co.uk/politics/constituency/[% constit.twfy.guardian_id %]">Guardian constituency page</a></li>
 
 [% FOREACH link IN mp.db.mp_links -%]
-            <li><a href="[% link.url %]">[% link.description %]</li>
+            <li><a href="[% link.url %]">[% link.description %]</a></li>
 [% END -%]
 [% IF mp.twfy.guardian_aristotle_id %]
             <li><a href="http://www.guardian.co.uk/politics/person/[% mp.twfy.guardian_aristotle_id %]">Guardian MP page</a></li>
@@ -70,7 +80,6 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
 [% END %]
 [% IF mp.blog -%]
         <div class="tab-pane" id="blog">
-          Blog here
         </div>
 [% END %]
       </div>

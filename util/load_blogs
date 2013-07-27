@@ -1,0 +1,42 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use 5.010;
+
+use YAML qw[LoadFile];
+use Data::Dumper;
+
+use FindBin '$Bin';
+use lib "$Bin/../PoliticalWeb/lib";
+use PoliticalWeb::Schema;
+
+my $file = shift || 'perlanetrc';
+
+my $yaml = LoadFile($file);
+
+my $sch = PoliticalWeb::Schema->connect(
+  'dbi:mysql:database=politicalweb', 'politicalweb', 'p0l171c4lw3b',
+);
+my $mp_rs = $sch->resultset('Mp');
+
+foreach my $f (@{$yaml->{feeds}}) {
+  my ($party, $cons, $name) = split /:\s+/, $f->{title};
+  my ($mp) = $mp_rs->search({ mp_name => $name });
+  if ($mp) {
+    warn "Found: $name\n";
+    $mp->add_to_mp_links({
+      description => 'Blog',
+      url         => $f->{web},
+      type        => 'blog',
+    });
+    $mp->add_to_mp_links({
+      description => 'Blog Feed',
+      url         => $f->{url},
+      type        => 'blogfeed',
+    });
+  } else {
+    warn "Can't find $name\n";
+    next;
+  }
+}

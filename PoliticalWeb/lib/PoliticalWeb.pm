@@ -29,6 +29,12 @@ get '/about/' => sub {
   return $page;  
 };
 
+get '/register' => sub {
+  my $page = template 'register';
+  cache_page $page;
+  return $page;
+};
+
 get '/constituency/?' => sub {
   template 'index', { error => 'That constituency' };
 };

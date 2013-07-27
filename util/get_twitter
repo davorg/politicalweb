@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use 5.010;
+
+use Web::Scraper;
+use URI;
+use Data::Dumper;
+
+my $url = 'http://tweetminster.co.uk/mps/page:';
+
+my $twitter = scraper {
+    process 'div.tweeters', 'twitter[]' => scraper {
+    process 'h3', constit => 'TEXT',
+    process '//p[@class="tweetTitle"]/text()', 'name' => 'TEXT',
+    process '//p[@class="tweetTitle"]/text()[last()]', 'username' => 'TEXT',
+  }
+};
+
+my @head = qw[name username constit];
+open my $file, '>', 'constit.csv' or die $!;
+
+foreach (1 .. 41) {
+    say $_;
+    my $res = $twitter->scrape( URI->new($url . $_) );
+    foreach my $t (@{$res->{twitter}}) {
+        print $file join(',', map { s/^\s+//; s/\s+$//; "'$_'" } @$t{@head}), "\n";
+    }
+}
