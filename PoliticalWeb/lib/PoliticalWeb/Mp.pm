@@ -39,7 +39,9 @@ sub new_from_constituency_name {
 }
 
 sub _get_from_cache {
-  return cache_get "M:$_[0]";  
+  my $name = shift;
+  $name =~ s/\s+/+/g;
+  return cache_get "M:$name";  
 }
 
 sub _get_from_twfy {
@@ -66,6 +68,7 @@ sub _get_from_twfy {
       $mp->{extra} = from_json(encode('utf8', decode('iso-8859-1', $ret->{results})));   
     }
 
+    $constit_name =~ s/\s+/+/g;
     cache_set "M:$constit_name", $mp, 60*60*60;
   } else {
     return;
