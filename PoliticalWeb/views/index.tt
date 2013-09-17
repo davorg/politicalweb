@@ -1,5 +1,5 @@
 [% META name="home" -%]
-<div class="hero-unit">
+<div class="jumbotron">
   <h1>The Political Web</h1>
   <p>What does the web know about your MP?</p>
   <p>Start by entering your details below.</p>

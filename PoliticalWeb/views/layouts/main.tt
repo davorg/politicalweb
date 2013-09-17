@@ -17,16 +17,21 @@
 }(document, 'script', 'facebook-jssdk'));</script>
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <div class="container-fluid">
-      <div class="navbar">
-        <div class="navbar-inner">
-          <a class="brand" href="#">The Political Web</a>
-          <ul class="nav">
+    <div class="container">
+      <nav class="navbar navbar-default">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">The Political Web</a>
+          <ul class="nav navbar-nav navbar-left">
             <li[% IF template.name=="home" %] class="active"[% END %]><a href="/">Home</a></li>
             <li[% IF template.name=="constituencies" %] class="active"[% END %]><a href="/constituencies/">Constituencies</a></li>
             <li[% IF template.name=="about" %] class="active"[% END %]><a href="/about/">About</a></li>
           </ul>
-          <ul class="nav pull-right login">
+
+          <ul class="nav navbar-nav navbar-right">
+<!--
+            <li><a href="/register">Register</a></li>
+            <li><a href="/login">Log in</a></li>
+-->
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 Share
@@ -40,13 +45,9 @@
               </ul>
             </li>
           </ul>
-          <ul class="nav pull-right">
-            <li><a href="/register">Register</a></li>
-            <li><a href="/login">Log in</a></li>
-          </ul>
         </div>
-      </div>
-      <div class="span8 offset1">
+      </nav>
+      <div class="col-md-12">
         <div class="row">
 [% content %]
         </div>
