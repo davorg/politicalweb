@@ -21,6 +21,7 @@ charset: "UTF-8"
 #template: "simple"
 
 template: "template_toolkit"
+layout: main.tt
 engines:
   template_toolkit:
     WRAPPER:   layouts/main.tt

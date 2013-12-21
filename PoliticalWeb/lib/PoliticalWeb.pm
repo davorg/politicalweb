@@ -1,14 +1,15 @@
 package PoliticalWeb;
-use Dancer ':syntax';
-use Dancer::Plugin::DBIC;
-use Dancer::Plugin::Cache::CHI;
+
+use Dancer2;
+use Dancer2::Plugin::DBIC;
+use Dancer2::Plugin::Cache::CHI;
 use Data::Dumper;
 
 use PoliticalWeb::Constituency;
 
 our $VERSION = '0.1';
 
-check_page_cache;
+# check_page_cache;
 
 get '/' => sub {
   return template 'index' unless keys %{ +params };

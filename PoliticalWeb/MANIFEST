@@ -7,7 +7,6 @@ views/index.tt
 views/layouts/main.tt
 MANIFEST.SKIP
 lib/PoliticalWeb.pm
-public/css/style.css
 public/css/error.css
 public/images/perldancer-bg.jpg
 public/images/perldancer.jpg
