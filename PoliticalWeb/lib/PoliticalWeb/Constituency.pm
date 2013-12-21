@@ -6,9 +6,9 @@ use 5.010;
 
 use Moose;
 use WebService::TWFY::API;
-use Dancer ':syntax';
-use Dancer::Plugin::DBIC;
-use Dancer::Plugin::Cache::CHI;
+use Dancer2;
+use Dancer2::Plugin::DBIC;
+use Dancer2::Plugin::Cache::CHI;
 use Encode qw[encode decode];
 
 use PoliticalWeb::Schema::Result::Constituency;
