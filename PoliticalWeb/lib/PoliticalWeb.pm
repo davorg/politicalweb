@@ -11,6 +11,13 @@ our $VERSION = '0.1';
 
 # check_page_cache;
 
+$ENV{PW_USER} && $ENV{PW_PASS}
+  or die 'Must set PW_USER and PW_PASS';
+
+my $cfg = dancer_app->config;
+$cfg->{plugins}{DBIC}{default}{user} = $ENV{PW_USER};
+$cfg->{plugins}{DBIC}{default}{pass} = $ENV{PW_PASS};
+
 get '/' => sub {
   return template 'index' unless keys %{ +params };
 
@@ -61,7 +68,7 @@ get '/constituencies/' => sub {
   my $page = template 'constituencies/index', {
     constits => [ $con_rs->search({}, { order_by => 'name'} )->all ]
   };
-  cache_page $page;
+  # cache_page $page;
   return $page;
 };
 
