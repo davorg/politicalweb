@@ -63,6 +63,11 @@ get '/constituency/:constname' => sub {
   }
 };
 
+get '/constituencies.json' => sub {
+  set serializer => 'JSON';
+  return { options => [ 'Balham', 'Tooting' ] };
+};
+
 get '/constituencies/' => sub {
   my $con_rs = schema->resultset('Constituency');
   my $page = template 'constituencies/index', {
