@@ -1,0 +1,38 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use 5.010;
+
+use Web::Scraper;
+use URI;
+use CHI;
+
+use FindBin '$Bin';
+use lib "$Bin/../PoliticalWeb/lib";
+use PoliticalWeb::Schema;
+
+my $cache = CHI->new(
+  driver => 'Memcached',
+  servers => [ 'localhost:11211' ],
+);
+
+my $sch = PoliticalWeb::Schema->connect(
+  'dbi:mysql:database=politicalweb', 'politicalweb', 'p0l171c4lw3b'
+);
+my $mp_rs = $sch->resultset('Mp');
+
+my $web = scraper {
+  process '//table[contains(@class, "infobox")]//a[@class="external text"]', site => '@href',
+};
+
+foreach ($mp_rs->all) {
+  my $c_name = $_->constituencies->first->name;
+  my $mp_json = $cache->get("M:$c_name");
+  warn $_->mp_name . ' / ' . $mp_json->{extra}{wikipedia_url} . "\n";
+  my $res = $web->scrape( URI->new( $mp_json->{extra}{wikipedia_url} ) );
+
+  say $_->mp_name;
+  say $res->{site};
+  say $c_name;
+}
